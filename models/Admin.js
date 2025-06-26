@@ -1,6 +1,6 @@
-// models/Contact.js
+// models/Admin.js
 module.exports = (sequelize, DataTypes) => {
-  const Contact = sequelize.define('Contact', {
+  const Admin = sequelize.define('Admin', {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -8,12 +8,18 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true, // Prevents duplicate registrations
+      validate: {
+        isEmail: true, // Ensures valid email format
+      },
     },
-    message: {
-      type: DataTypes.TEXT,
+    password: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
+  }, {
+    tableName: 'admins', // ✅ Explicit table name to match your MySQL DB
   });
 
-  return Contact;
+  return Admin;
 };

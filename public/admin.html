@@ -97,11 +97,9 @@
         body: JSON.stringify({ email, password })
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('admin-token', data.token);
-        alert('✅ Login successful! Redirecting to dashboard...');
-        window.location.href = '/dashboard.html'; // ✅ REDIRECT to dashboard
+      if (res.redirected) {
+        // ✅ Follow redirect manually
+        window.location.href = res.url;
       } else {
         const msg = await res.text();
         alert('❌ ' + msg);

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel - UV's Petroleums</title>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Public Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1581091870622-7c35bda9e7c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2, h3 {
+      margin-top: 20px;
+      text-align: center;
+      color: #f0f8ff;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      width: 100%;
+      max-width: 400px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      background: #f0f0f0;
+      color: #111;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      background: #1873dc;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #105bb8;
+    }
+
+    table {
+      margin-top: 30px;
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 900px;
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      color: #fff;
+    }
+
+    th, td {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+  </style>
+  <script>
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      const res = await fetch('/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem('admin-token', data.token);
+        alert('✅ Login successful! Redirecting to dashboard...');
+        window.location.href = '/dashboard.html'; // ✅ REDIRECT to dashboard
+      } else {
+        const msg = await res.text();
+        alert('❌ ' + msg);
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+
+      const res = await fetch('/admin/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      const msg = await res.text();
+      alert(msg);
+    }
+
+    async function loadMessages() {
+      const token = localStorage.getItem('admin-token');
+      if (!token) {
+        alert('Please login first.');
+        return;
+      }
+
+      const res = await fetch('/admin/messages', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (!res.ok) {
+        const msg = await res.text();
+        alert('❌ ' + msg);
+        return;
+      }
+
+      const data = await res.json();
+      const tbody = document.getElementById('message-table-body');
+      tbody.innerHTML = '';
+
+      data.forEach(msg => {
+        const row = `<tr>
+          <td>${msg.name}</td>
+          <td>${msg.email}</td>
+          <td>${msg.message}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="overlay">
+    <h2>🛠️ Admin Panel - UV's Petroleums</h2>
+
+    <form onsubmit="handleLogin(event)">
+      <h3>🔐 Login</h3>
+      <input type="email" id="login-email" placeholder="Email" required />
+      <input type="password" id="login-password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+
+    <form onsubmit="handleRegister(event)">
+      <h3>📝 Register</h3>
+      <input type="text" id="reg-name" placeholder="Name" required />
+      <input type="email" id="reg-email" placeholder="Email" required />
+      <input type="password" id="reg-password" placeholder="Password" required />
+      <button type="submit">Register</button>
+    </form>
+
+    <h3>📥 Contact Messages</h3>
+    <button onclick="loadMessages()">📩 Load Messages</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th><th>Email</th><th>Message</th>
+        </tr>
+      </thead>
+      <tbody id="message-table-body"></tbody>
+    </table>
+  </div>
+</body>
+</html>

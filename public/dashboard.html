@@ -1,0 +1,61 @@
+<!-- public/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard | UV’s Petroleums</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Public Sans', sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1581091870622-7c35bda9e7c4?auto=format&fit=crop&w=1950&q=80');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+    }
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.95);
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <header class="flex items-center justify-between px-10 py-6 bg-white shadow-md">
+      <h1 class="text-2xl font-bold text-blue-700">🛢️ UV's Petroleums Admin Dashboard</h1>
+      <span class="text-sm text-gray-600">Logged in as Admin</span>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-12">
+      <h2 class="text-4xl font-extrabold text-gray-800 mb-10 text-center">📊 Company Overview</h2>
+
+      <section class="mb-10 p-6 bg-white rounded-lg shadow-lg">
+        <h3 class="text-2xl font-bold text-gray-700 mb-2">📈 Current Stock Value</h3>
+        <p class="text-lg text-gray-600">₹82.35 per share <span class="text-sm text-gray-500">(as of June 2025)</span></p>
+      </section>
+
+      <section class="mb-10 p-6 bg-white rounded-lg shadow-lg">
+        <h3 class="text-2xl font-bold text-gray-700 mb-3">🏦 Key Investors</h3>
+        <ul class="list-disc list-inside text-lg text-gray-700 space-y-1">
+          <li><strong>PetroCore Ventures</strong> – ₹15 Cr</li>
+          <li><strong>GreenFuel Group</strong> – ₹7.8 Cr</li>
+          <li><strong>Vishwas Energy Holdings</strong> – ₹5.1 Cr</li>
+        </ul>
+      </section>
+
+      <section class="p-6 bg-white rounded-lg shadow-lg">
+        <h3 class="text-2xl font-bold text-gray-700 mb-2">🚧 Expansion Updates</h3>
+        <p class="text-lg text-gray-600">
+          We are opening <strong>3 new refilling stations</strong> in <strong>Bhopal</strong>, <strong>Indore</strong>, and <strong>Jabalpur</strong> by Q3 2025.
+          These projects aim to increase coverage by 22% in Central India.
+        </p>
+      </section>
+    </main>
+
+    <footer class="text-center text-sm text-gray-500 py-6 border-t mt-10">
+      © 2025 UV's Petroleums. Admin Portal. All rights reserved.
+    </footer>
+  </div>
+</body>
+</html>
